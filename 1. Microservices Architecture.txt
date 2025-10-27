@@ -1,0 +1,41 @@
+1. Microservices Architecture:
+Breaking down monolithic applications into smaller, independent services
+Services communicate via APIs
+2. Components of Microservices:
+DNS (Domain Name System)
+Load Balancers
+Authentication and Authorization
+API Gateway
+Databases (SQL, NoSQL, Redis)
+Message Brokers (e.g., Kafka)
+3. Communication Types:
+Synchronous communication
+Asynchronous communication (Publish-Subscribe model, Queue model)
+4. Key Concepts:
+Service Discovery
+Event Syncing
+Externalized Logging
+Stateless Services
+5. 12-Factor App:
+Codebase
+Dependencies
+Config
+Build, release, run
+Processes
+Port binding
+Concurrency
+Disposability
+Dev/prod parity
+Logs
+Admin processes
+6. Tools Mentioned:
+ELK Stack
+Splunk
+Dynatrace
+Datadog
+7. Best Practices:
+Separate codebase for each microservice
+Externalize configurations
+Implement CI/CD for each service
+Design services to be stateless
+Externalize logs
