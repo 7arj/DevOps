@@ -1,0 +1,52 @@
+DevOps Introduction
+
+1. DevOps Overview
+   - DevOps combines software development and IT operations.
+   - Aims to deliver applications and services faster and more reliably.
+   - Involves practices, cultural philosophies, and tools.
+
+2. AWS and Cloud Infrastructure
+   - AWS has different regions (e.g., Mumbai, Hyderabad).
+   - Regions contain multiple data centers/buildings for redundancy.
+   - Virtual Private Cloud (VPC) provides isolated network environments.
+   - Subnets can be public (connected to internet gateway) or private.
+
+3. Microservices Architecture
+   - Requests typically go through a load balancer and authentication/authorization service.
+   - Microservices can communicate synchronously or asynchronously.
+   - Asynchronous communication can use queue or publish-subscribe models.
+
+4. Software Development Life Cycle (SDLC)
+   - Comparison: Traditional Waterfall model vs. DevOps approach.
+   - Waterfall: Requirements > Design > Coding > Testing > Release > Maintenance.
+   - DevOps emphasizes continuous integration and delivery.
+
+5. Shift Left Approach
+   - Catch bugs and issues as early as possible in the development process.
+   - Reduces cost and the impact of fixing issues.
+
+6. Security Testing
+   - Software Composition Analysis (SCA): Checks for vulnerabilities in dependencies.
+   - Static Application Security Testing (SAST): Analyzes code for security issues.
+   - Dynamic Application Security Testing (DAST): Tests running applications.
+
+7. Continuous Integration (CI) Pipeline
+   - Clone code repository.
+   - Install dependencies.
+   - Lint code.
+   - Compile/build code.
+   - Run unit tests.
+   - Perform SCA and SAST.
+   - Create Docker image.
+   - Push artifact to repository (e.g., JFrog Artifactory).
+
+8. DevOps Tools
+   - Version Control: Git, GitHub.
+   - CI/CD: Jenkins, GitHub Actions.
+   - Containerization: Docker, Kubernetes.
+   - Infrastructure as Code: Terraform.
+
+9. Project Expectations
+   - Implement a CI pipeline for an existing or new project.
+   - Understand and explain each step in the pipeline.
+   - Can use existing code samples but must comprehend the process.
