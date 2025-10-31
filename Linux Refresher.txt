@@ -1,0 +1,59 @@
+Linux Refresher Notes
+
+1. CI/CD Review
+----------------
+CI (Continuous Integration):
+- Process: Code Check-in -> Pipeline Trigger -> Lint -> Build -> Unit Test -> SCA -> SAST -> Dockerize -> Push Artifact.
+- Tools often used: Jenkins, GitHub Actions.
+- Key Goal: Catch integration issues early.
+
+CD (Continuous Delivery vs Deployment):
+- Starts after CI.
+- Stages: Deploy to SIT (System Integration Testing) -> SIT Automated Tests -> Deploy to Performance Env -> DAST (Security).
+- Continuous Delivery: Requires manual approval before Production.
+- Continuous Deployment: Fully automated to Production.
+
+2. Linux Introduction
+----------------------
+- Overview: Open-source OS, created by Linus Torvalds (1991).
+- Usage: Runs >90% of production servers.
+- Distros: Ubuntu, Red Hat (RHEL), CentOS, Debian.
+- Basic Commands:
+  $ uname -a        # Check kernel info
+  $ cat /etc/*release # Check distribution info
+  $ top             # Check system processes/resources
+
+3. AWS EC2 Instance Creation
+-----------------------------
+- AMI (Amazon Machine Image): The OS template (e.g., Ubuntu 20.04).
+- Instance Type: CPU/RAM config (e.g., t2.micro).
+- Key Pair: Login credential (.pem file).
+- Network: Choose VPC & Subnet.
+- IP Types:
+  - Public IP: Internet accessible (dynamic).
+  - Private IP: Internal only.
+  - Elastic IP: Static public IP.
+- Security Groups: Firewall rules (Allow SSH port 22).
+- Storage: EBS volumes.
+- Spot Instances: Bid for unused capacity (cheaper but interruptible).
+
+4. Connecting to EC2 Instance
+-----------------------------
+- Protocol: SSH (Secure Shell).
+- Prerequisite: .pem key file with restricted permissions.
+- Default Users: 'ubuntu' (Ubuntu), 'ec2-user' (Amazon Linux/RHEL).
+
+Commands:
+# 1. Change permissions of key file (CRITICAL STEP)
+$ chmod 600 keyfile.pem
+
+# 2. Connect to instance
+$ ssh -i keyfile.pem ubuntu@<Public-IP>
+
+5. AWS Networking Concepts
+---------------------------
+- VPC (Virtual Private Cloud): Your isolated network in AWS.
+- Subnets:
+  - Public Subnet: Has Internet Gateway (IGW) attached.
+  - Private Subnet: No direct internet access (uses NAT Gateway for outbound).
+- VPC Peering: Connecting two different VPCs privately.
