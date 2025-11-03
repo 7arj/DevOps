@@ -1,0 +1,86 @@
+Introduction to Shell Scripting Notes
+
+1. Basic Linux Commands
+------------------------
+- Navigation & File Mgmt:
+  $ pwd           # Print Working Directory
+  $ cd /path      # Change Directory
+  $ mkdir folder  # Make Directory
+  $ rmdir folder  # Remove empty directory
+  $ rm -rf folder # Remove directory with content (careful!)
+  $ ls -l         # List files with details
+
+- Permissions (chmod):
+  $ chmod +x script.sh  # Make executable
+  $ chmod 755 file      # rwx for owner, rx for others
+
+- ACLs (Access Control Lists):
+  - For when basic permissions (rwx) aren't enough.
+  - Granular control for specific users/groups.
+  $ getfacl file
+  $ setfacl -m u:user:rw file
+
+- Search:
+  $ find /home -name "*.txt"  # Search for text files
+
+2. Shell Scripting Basics
+--------------------------
+- Create script: File ending in .sh
+- Shebang (First line):
+  #!/bin/bash
+  # Tells the system to use bash interpreter.
+
+- Variables & Arguments:
+  name="DevOps"         # No spaces around =
+  echo "Hello $name"
+  echo "Script Name: $0"
+  echo "First Arg: $1"
+
+- User Input:
+  read -p "Enter name: " username
+
+- String Manipulation:
+  text="hello"
+  echo ${text^^}  # Convert to UPPERCASE (HELLO)
+
+- Logic (If/Else):
+  if [ -f "file.txt" ]; then
+      echo "File exists"
+  else
+      echo "File missing"
+  fi
+
+- User Creation Script Snippet:
+  sudo useradd $1 -m
+  echo "User $1 created."
+
+3. VI Editor
+-------------
+- Two Main Modes:
+  1. Command Mode (Default): Navigation, copy/paste.
+  2. Insert Mode (Press 'i'): Typing text.
+
+- Basic Commands (in Command Mode):
+  :w   # Save
+  :q   # Quit
+  :wq  # Save & Quit
+  :q!  # Quit without saving
+  dd   # Delete line
+  yy   # Copy line
+  p    # Paste
+
+4. Best Practices
+------------------
+- Industry Standards:
+  1. Always verify inputs (Input Validation).
+  2. Add Comments (# This does X).
+  3. Include Version History/Header at top.
+  4. Error Handling (Exit on error).
+     set -e  # Stop script if command fails
+
+- Header Example:
+  ################################
+  # Author: Student
+  # Date: 2025-10-31
+  # Description: User setup
+  ################################
