@@ -1,0 +1,47 @@
+Docker Overview:
+- Docker is a platform for creating and managing containers
+- Usage of Docker in production is reducing, but it's still the best platform for learning containerization
+- Kubernetes now uses ContainerD and Cryo instead of Docker
+
+Containers:
+- Containers are lightweight alternatives to virtual machines
+- They are always created from images
+- Containers do not have their own operating system, they use the host OS
+
+Docker Architecture:
+- Docker Client: Interacts with the Docker Daemon
+- Docker Daemon: Does all the work (checking for images, downloading, creating containers)
+- Docker Hub: Remote repository for Docker images
+
+Key Docker Concepts:
+- Images
+- Containers
+- Volumes
+- Networking
+
+Docker Commands:
+- docker run: Creates and runs a new container
+- docker run -it: Creates an interactive container with terminal access
+- docker ps: Lists running containers
+- docker images: Lists available images
+
+Container vs Virtual Machine:
+- Containers are much lighter than VMs
+- VMs have their own OS, while containers share the host OS
+- Containers start much faster than VMs
+
+Docker Installation:
+- Can be installed on Ubuntu using a convenience script
+- Windows and Mac use a hypervisor to run Linux containers
+
+Docker Hub:
+- Central repository for Docker images
+- Images can be pulled from here if not available locally
+
+Practical Example:
+- Created and ran a "hello-world" container
+- Created an interactive Ubuntu container
+
+Docker's Interaction with Host OS:
+- Docker communicates with the host OS to perform operations
+- This is why containers are lightweight and don't need their own OS.
