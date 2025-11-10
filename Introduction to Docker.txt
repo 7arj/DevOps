@@ -1,0 +1,58 @@
+Introduction to Docker
+
+1. Advantages of Docker
+   - Allows creation of separate containers for different applications
+   - Solves dependency conflicts (e.g., Python 2.7 vs 3.0)
+   - Reduces environment setup time significantly
+
+2. Docker vs Virtual Machines
+   - Docker doesn't use its own operating system
+   - Docker interacts directly with the Linux kernel
+   - Docker works on Windows and Mac using hypervisor technology (WSL for Windows, hypervisor for Mac)
+
+3. Linux Kernel and Docker
+   - Linux kernel integrates with various hardware
+   - Docker containers interact directly with the kernel, not with distribution-specific software
+
+4. Docker Image Layers
+   - Images are defined as layered file systems
+   - Each layer represents a step in the image creation process
+   - Layers are stored in the overlay2 folder by default
+
+5. Docker Commands
+   - docker run: Creates and starts a container
+   - docker ps: Lists running containers
+   - docker ps -a: Lists all containers (including stopped ones)
+   - docker stop: Stops a running container
+   - docker kill: Forcefully stops a container
+   - docker container prune: Removes all stopped containers
+   - docker images: Lists all images
+   - docker rmi: Removes an image
+   - docker pull: Downloads an image from Docker Hub
+   - docker commit: Creates a new image from a container
+   - docker push: Pushes an image to Docker Hub
+   - docker inspect: Provides detailed information about a container or image
+
+6. Docker Hub
+   - Repository for storing and sharing Docker images
+   - Requires account creation and login for pushing images
+
+7. Docker Internals
+   - Default root directory: /var/lib/docker
+   - Storage driver: overlay2 (default)
+   - Image layers are stored in the overlay2 folder
+
+8. Image Creation and Pushing
+   - Creating an image from a container using docker commit
+   - Pushing images to Docker Hub
+   - Image naming conventions for pushing to Docker Hub
+
+9. Docker Image Layers (Additional Details)
+   - Images consist of multiple layers
+   - Layers are reused when creating similar images to save space
+   - Layer dependencies affect how images are built and tagged
+
+10. Container vs Image
+    - Containers are running instances of images
+    - Changes made in a container don't affect the original image
+    - New images can be created from modified containers
