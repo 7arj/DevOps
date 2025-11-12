@@ -1,0 +1,52 @@
+Docker Images and Dockerfile Notes
+
+1. Docker File Commands
+   - FROM: Defines the base image.
+   - RUN: Executes commands when building the image.
+   - CMD: Defines default instruction when container is created (can be overridden).
+   - ENTRYPOINT: Converts container to executable (cannot be easily overridden).
+   - ENV: Sets environment variables.
+   - COPY: Copies files from local machine to image.
+   - ADD: Can copy files and also download from URLs.
+
+2. Building Images
+   - Use "docker build" command.
+   - Syntax: docker build -t <tag> -f <Dockerfile> .
+
+3. Creating Containers
+   - Use "docker run" command.
+   - Can override CMD but not ENTRYPOINT easily.
+
+4. Layers in Docker
+   - Each command in Dockerfile creates a new layer.
+   - Fewer layers generally means better performance.
+   - Use multi-stage builds to reduce layers and image size.
+
+5. Copy-on-Write (CoW)
+   - Docker's strategy for efficient use of storage.
+   - Loads minimum required files when creating container.
+   - Copies files from lower layers only when needed.
+
+6. Best Practices
+   - Reduce number of layers for better performance.
+   - Use multi-stage builds to optimize image size.
+   - Order Dockerfile commands to maximize cache usage.
+   - Use COPY instead of ADD when simply copying files.
+
+7. Multi-stage Builds
+   - Allows using multiple FROM statements in Dockerfile.
+   - Useful for separating build environment from runtime environment.
+   - Can significantly reduce final image size.
+
+8. Real-world Example
+   - Deploying a Java application with Tomcat.
+   - Demonstrated how to create a Dockerfile for a web application.
+
+9. Image Optimization
+   - Combine RUN commands to reduce layers.
+   - Use specific base images (e.g., alpine versions) for smaller footprint.
+   - Carefully order commands to leverage build cache.
+
+10. Environment Variables
+    - Used to pass configuration into containers.
+    - Avoids hardcoding sensitive information in images.
