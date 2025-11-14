@@ -1,0 +1,40 @@
+Docker Containers and Internals Notes
+
+1. Docker Containers
+   - A container is essentially a process running on the host machine but in an isolated environment.
+   - Leverages Linux kernel features: Namespaces and Cgroups.
+   - Command to inspect process details:
+     $ docker top <container_id>
+
+2. Six Types of Isolation (Namespaces)
+   1. Network space (own IP, ports)
+   2. Process space (own PIDs)
+   3. File system space (own root /)
+   4. Hostname space (own hostname)
+   5. User space (own user/group IDs)
+   6. IPC space (Inter-process communication)
+
+3. Cgroups (Control Groups)
+   - Resource Management feature of Linux kernel.
+   - Critical for prohibiting a single container from exhausting host resources (CPU, RAM).
+   - Example command to limit memory:
+     $ docker run --memory="256m" nginx
+
+4. Containers vs Virtual Machines
+   - Containers: Lightweight, share host OS kernel.
+   - VMs: Heavyweight, run full Guest OS on Hypervisor.
+   - Startup time: Containers (Seconds) vs VMs (Minutes).
+
+5. Windows Containers
+   - Can run on Linux hosts using a base Windows image.
+   - Trade-off: Windows images are huge (e.g., Server Core ~3.5 GB) vs Linux (Alpine ~5 MB).
+   - Compatibility: Windows containers run natively on Windows Server.
+
+6. Docker on Windows/Mac
+   - Since Docker creates Linux containers, it needs a Linux kernel.
+   - On Windows/Mac, Docker Desktop runs a lightweight Linux VM (using WSL2 or HyperKit) to host the daemon and containers.
+
+7. Container Lifecycle
+   - Ephemeral: Designed to be short-lived and replaceable.
+   - "Cattle, not pets": Don't patch a running container; build a new image and replace it.
+   - Design apps to handle restarts/failures gracefully.
