@@ -1,0 +1,50 @@
+Docker Volumes (Persistence) Notes
+
+1. Types of Docker Volumes
+   - Bind Mounts: Map host folder to container.
+   - Named Volumes: Managed by Docker, stored in /var/lib/docker/volumes.
+   - Anonymous Volumes: Randomly named, managed by Docker.
+   - Tmpfs: Stored in memory (Linux only, rare).
+
+2. Bind Mounts
+   - Use full path on host.
+   - Great for config files or source code in dev.
+   - Syntax:
+     $ docker run -v /home/user/data:/app/data ...
+
+3. Named Volumes
+   - Best for Production/Persistence.
+   - Docker manages storage location.
+   - Syntax:
+     $ docker run -v my_db_data:/var/lib/mysql ...
+
+4. Anonymous Volumes
+   - Created if no name/host path provided.
+   - Hard to reference later (random hash name).
+   - Syntax:
+     $ docker run -v /app/data ...
+
+5. Volume Persistence
+   - Data persists even if the container is STOPPED or REMOVED.
+   - Essential for Databases (MySQL, Postgres).
+
+6. Docker Volume Commands
+   $ docker volume create myvol  # Create
+   $ docker volume ls            # List
+   $ docker volume inspect myvol # Details
+   $ docker run -v ...           # usage
+
+7. Read-Only Volumes
+   - Add `:ro` to prevent container from editing data.
+   $ docker run -v /host/data:/app/data:ro ...
+
+8. Importance
+   - Data backup/restore.
+   - Sharing data between containers.
+   - decoupling storage from container lifecycle.
+
+9. Practical Example (MySQL)
+   - Run MySQL with a volume.
+   - Create a table & insert data.
+   - Delete container.
+   - Run new container attached to SAME volume -> Data is still there!
