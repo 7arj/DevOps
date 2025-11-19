@@ -1,0 +1,49 @@
+Docker Networking Notes
+
+1. Introduction
+   - Allows containers to communicate with each other and the outside world.
+   - Crucial for troubleshooting and system design.
+
+2. Basic Concepts
+   - IP Address: Unique address for devices (IP protocol).
+   - Ethernet Card/Cable: Hardware for connection.
+   - Switch: Connects devices, forwards data.
+   - Gateway: Connects different networks.
+   - Subnetting:
+     - Dividing networks into subnetworks.
+     - CIDR notation (e.g., /24, /26).
+
+3. Docker Network Architecture
+   - Docker creates a virtual network on the host.
+   - docker0: Default bridge network created on install.
+   - Containers connect to docker0 via veth (virtual ethernet) pairs.
+
+4. Network Types
+   - Bridge: Default. Containers on same host communicate.
+   - Host: Uses host's network stack directly (no isolation).
+   - None: No network access (isolated).
+   - Custom Bridge: User-defined for specific isolation.
+
+5. Container Networking
+   - Each container gets its own network namespace & IP.
+   - Communication via IP addresses.
+   - Docker uses iptables for NAT/routing.
+
+6. Commands
+   - Create network:
+     $ docker network create my_net
+   - Inspect network:
+     $ docker network inspect my_net
+   - Connect to network:
+     $ docker network connect my_net my_container
+
+7. Multiple Networks
+   - Containers can connect to multiple networks.
+   - Useful for accessing isolated services.
+
+8. Troubleshooting
+   - Tools: docker network inspect, ip addr, ping.
+   - Check connectivity between containers.
+
+9. Security
+   - Use network isolation to prevent unauthorized communication.
