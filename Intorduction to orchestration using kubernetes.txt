@@ -1,0 +1,51 @@
+Introduction to Orchestration using Kubernetes
+
+1. What is Kubernetes (K8s)?
+   - A container orchestrator (more complex than Docker).
+   - Manages and orchestrates containers at scale.
+   - Automates deployment, scaling, and management of containerized applications.
+
+2. Kubernetes Architecture
+   - Two main types of nodes:
+     1. Control Plane (Master Node): Manages the cluster.
+     2. Data Plane (Worker Node): Runs the actual applications (workloads).
+
+   A. Control Plane Components:
+      - API Server: The entry point for all REST commands. Authenticates & validates requests.
+      - etcd: Key-value store database. Stores the entire cluster state (source of truth).
+      - Scheduler: Assigns pods to nodes based on resources (CPU/RAM).
+      - Controller Manager: Ensures actual state matches desired state (e.g., restarting failed pods).
+
+   B. Data Plane Components:
+      - Kubelet: Agent running on every node. Talks to API server and starts containers.
+      - Container Runtime Interface (CRI): The software that actually runs containers (e.g., Docker, containerd).
+      - Kube-proxy: Maintains network rules, allows communication.
+
+3. Pod Creation Process (Step-by-Step)
+   1. User runs `kubectl run` -> Requests API Server.
+   2. API Server authenticates & writes to `etcd`.
+   3. Scheduler notices new unassigned pod -> Assigns it to a Node.
+   4. API Server updates `etcd` with assignment.
+   5. Kubelet on that Node sees the task -> Instructs CRI to start container.
+   6. Container starts -> Kubelet reports status back to API Server.
+
+4. Key Concepts
+   - Pod: Smallest deployable unit (group of 1+ containers).
+   - Node: Physical/Virtual machine.
+   - Desired State: What you want (e.g., 3 replicas).
+   - Current State: What is actually running.
+
+5. Key Features
+   - Self-healing: Auto-restarts failed containers.
+   - Horizontal Scaling: Adds more pods as load increases.
+   - Load Balancing: Distributes traffic.
+   - Automatic Bin Packing: Efficiently places containers on nodes.
+   - Secret/Config Management: Manages sensitive data without rebuilding images.
+
+6. Basic Commands
+   $ kubectl cluster-info       # View cluster details
+   $ kubectl get nodes          # List all nodes
+   $ kubectl run nginx --image=nginx  # Create a pod
+   $ kubectl get pods           # List pods
+   $ kubectl describe pod nginx # Detailed info
+   $ kubectl delete pod nginx   # Delete pod
