@@ -1,0 +1,50 @@
+Deep Dive into Kubernetes Pods
+
+1. Kubernetes Architecture (Quick Recap)
+   - Control Plane (Master): Managing decisions.
+     - Components: API Server, etcd (NoSQL DB), Controller Manager, Scheduler.
+   - Data Plane (Worker): Running workloads.
+     - Components: Kubelet, Kube-proxy, Container Runtime.
+
+2. Pods
+   - Basic unit of deployment in K8s (we don't deploy just containers).
+   - Group of 1 or more containers.
+   - Shared Context:
+     - Co-scheduled (always on same node).
+     - Co-located.
+     - Share Network Namespace (communicate via `localhost`).
+
+3. Kubernetes Cluster Setup
+   - Tools: `kubeadm` (standard initializer).
+   - Setup: 1 Master + 2 Workers.
+   - Networking: Must install a CNI plugin (e.g., Weave, Flannel) for pods to talk.
+
+4. Namespaces
+   - Virtual clusters within a physical cluster.
+   - Default Namespaces:
+     - `default`: For user workloads.
+     - `kube-system`: For k8s internal components.
+     - `kube-public` & `kube-node-lease`.
+   - Use Case: Isolation (Dev vs Prod), Organization.
+
+5. Kubernetes Networking
+   - Pod-to-Pod: All pods can communicate with all other pods directly (Flat Network).
+   - Pod IP: Every pod gets a unique IP.
+   - Intra-Pod: Containers in same pod talk via localhost.
+
+6. Kubernetes Commands
+   $ kubectl get nodes            # List nodes
+   $ kubectl get pods             # List pods (default ns)
+   $ kubectl get pods -n <ns>     # List pods in specific namespace
+   $ kubectl run nginx --image=nginx  # Create pod
+   $ kubectl create ns dev        # Create 'dev' namespace
+
+7. Control Plane Components as Pods
+   - If you check `kube-system` namespace, you'll see:
+     - API Server, Scheduler, Controller Manager, etcd runs as PODS!
+   - Kubelet & Container Runtime run as system services (daemons), NOT pods.
+
+8. Best Practices
+   - One Container per Pod (General rule).
+   - Sidecar Pattern: Exception where helper container runs alongside main app (e.g., logging agent).
+   - Use Namespaces to organize large projects.
