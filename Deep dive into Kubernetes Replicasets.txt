@@ -1,0 +1,47 @@
+Deep Dive into Kubernetes ReplicaSets
+
+1. Recap: Architecture & Pods
+   - Control Plane (API, etcd, scheduler) + Data Plane (kubelet).
+   - Pod: Smallest unit. 1+ containers co-located.
+   - Lifecycle: If a pod dies, Kubelet restarts it ONE time (usually). But if the NODE dies, the pod is lost forever.
+
+2. ReplicaSet (RS)
+   - Ensures a specified number of pod replicas are running AT ALL TIMES.
+   - High Availability: Even if a node crashes, RS creates replacement pods on other nodes.
+   - Self-Healing:
+     - Too few pods? -> Creates new ones.
+     - Too many pods? -> Deletes extra ones.
+
+3. YAML Basics
+   - Almost all K8s objects are defined in YAML.
+   - 4 Key Fields:
+     1. apiVersion: which version of API to use (e.g., apps/v1).
+     2. kind: What object? (Pod, ReplicaSet, Service).
+     3. metadata: Name, labels, annotations.
+     4. spec: The "Body" / desired state.
+
+4. ReplicaSet vs Pod
+   - Pod: Single point of failure if node dies.
+   - RS: Manages multiple pods, ensuring X copies exist.
+
+5. How It Works (Internals)
+   - RS Controller watches the "Desired" vs "Actual" state loop.
+   - Uses **Labels and Selectors** to identify which pods belong to it.
+   - If a pod is deleted ($ kubectl delete pod ...), RS notices count dropped and immediately creates a replacement.
+
+6. Key Commands
+   $ kubectl apply -f rs.yaml     # Create/Update from file
+   $ kubectl get pods             # List pods
+   $ kubectl get rs               # List ReplicaSets
+   $ kubectl describe rs <name>   # See events (scaling up/down)
+   $ kubectl delete pod <name>    # Test self-healing
+
+7. Labels & Selectors
+   - Labels: Tags on pods (e.g., app: nginx).
+   - Selectors: How RS finds its pods (matchLabels: app: nginx).
+   - CRITICAL: If selector matches existing pods, RS will acquire them!
+
+8. Taints & Tolerations (Briefly)
+   - Taint: Applied to a Node ("Don't schedule here unless you tolerate this").
+   - Toleration: Applied to a Pod ("I can run on tainted nodes").
+   - Master nodes usually have a `NoSchedule` taint so user apps don't clutter them.
