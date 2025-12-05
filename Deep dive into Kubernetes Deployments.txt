@@ -1,0 +1,66 @@
+Deep Dive into Kubernetes Deployments
+
+1. Introduction to Deployments
+   - Deployments are a higher-level abstraction that manages ReplicaSets.
+   - Internally, a Deployment creates a ReplicaSet.
+   - YAML structure is similar to ReplicaSet, but with `kind: Deployment`.
+   - Offers all benefits of ReplicaSets + Updates & Rollbacks.
+
+2. Advantages of Deployments
+   - Easy scaling (up/down).
+   - Self-healing (automatic pod replacement).
+   - **Rolling Updates**: Update app version without downtime.
+   - **Rollbacks**: Revert to a previous version if something breaks.
+
+3. Rolling Updates
+   - The default update strategy.
+   - Gradually replaces old pods with new ones.
+   - Process:
+     1. Creates a NEW ReplicaSet (RS-2) with the new version.
+     2. Scales UP the new RS-2 by 1 pod.
+     3. Scales DOWN the old RS-1 by 1 pod.
+     4. Repeats until all pods are on the new version.
+   - Result: Zero downtime for users.
+
+4. Internal Working
+   - Deployment Controller watches for changes in the YAML (e.g., image tag change).
+   - It manages the transition between two ReplicaSets (Old and New).
+   - It doesn't kill all old pods at once (unless configured to).
+
+5. Scaling Deployments
+   - Methods:
+     1. Command: `kubectl scale deployment <name> --replicas=5`
+     2. YAML: Update `replicas: 5` in file and apply.
+   - HPA (Horizontal Pod Autoscaler): Automatically scales pods based on CPU/RAM usage.
+
+6. Scaling Types in Kubernetes
+   - HPA (Horizontal Pod Autoscaler): Adds more PODS.
+   - VPA (Vertical Pod Autoscaler): Adds more CPU/RAM to existing pods.
+   - Cluster Autoscaler: Adds more NODES (VMs) to the cluster.
+
+7. Zero Downtime Upgrades (ZDU) & Databases
+   - Code updates are easy with Rolling Updates.
+   - Databases are tricky!
+   - Strategy:
+     - Don't delete columns/tables immediately.
+     - Deprecate old fields first.
+     - Use Step Upgrades (v1 -> v2 -> v3).
+
+8. Managed Kubernetes Services (Cloud)
+   - EKS (AWS), AKS (Azure), GKE (Google).
+   - The Cloud Provider manages the Control Plane (Master Node).
+   - User only manages Data Plane (Worker Nodes).
+   - easier scaling and management.
+
+9. Best Practices
+   - **Always use Deployments** (don't create direct Pods or RS).
+   - Use Declarative approach (`kubectl apply -f yaml`) vs Imperative.
+   - Test rollbacks in staging.
+   - Use Managed K8s for Production.
+
+10. Commands
+    $ kubectl create deployment nginx --image=nginx
+    $ kubectl scale deployment nginx --replicas=3
+    $ kubectl set image deployment nginx nginx=nginx:alpine  # Update image
+    $ kubectl rollout status deployment/nginx
+    $ kubectl rollout undo deployment/nginx  # Rollback
