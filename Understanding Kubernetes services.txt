@@ -1,0 +1,61 @@
+Understanding Kubernetes Services
+
+1. Why Services?
+   - Pods are ephemeral (they die and get new IPs).
+   - "Services" provide a stable, static IP/Endpoint to access a group of Pods.
+   - Solves the problem of direct pod-to-pod communication.
+
+2. Types of Services
+   A. ClusterIP (Default)
+      - Internal Only. Not accessible from outside.
+      - Used for internal communication (e.g., Backend talking to DB).
+      - Balances traffic across pods using Labels/Selectors.
+
+   B. NodePort
+      - Exposes service on a static port on EACH Node.
+      - Range: 30000 - 32767.
+      - Good for testing or limited external access.
+      - Flow: User -> NodeIP:NodePort -> Service -> Pod.
+
+   C. LoadBalancer
+      - Creates an External Load Balancer (AWS ELB, Google LB).
+      - Provides a Public IP.
+      - Automatically sets up NodePort and ClusterIP underneath.
+      - Best for Production external access.
+
+   D. ExternalName (Rare)
+      - Maps a service to a DNS name.
+
+3. Port Terminology (Confusing but Important!)
+   - port: The port of the SERVICE itself (virtual ip).
+   - targetPort: The port the CONTAINER is listening on.
+   - nodePort: The port opened on the physical NODE (30000+).
+
+4. Service Discovery & Load Balancing
+   - Services track pods dynamically using Selectors.
+   - If a pod dies and a new one starts (new IP), Service updates its list automatically.
+   - "Round Robin" load balancing to pods by default.
+
+5. YAML Structure
+   apiVersion: v1
+   kind: Service
+   metadata:
+     name: my-service
+   spec:
+     type: NodePort      # ClusterIP / LoadBalancer
+     selector:
+       app: nginx        # Matches Pod labels
+     ports:
+       - port: 80
+         targetPort: 80
+         nodePort: 30007
+
+6. Best Practices
+   - Use ClusterIP for anything that doesn't need to be public.
+   - Use LoadBalancer for public-facing web apps.
+   - Be careful with Selectors! If they match the wrong pods, traffic will go to the wrong place.
+
+7. Commands
+   $ kubectl get svc              # List services
+   $ kubectl expose deploy nginx --port=80 --type=NodePort
+   $ kubectl describe svc <name>  # Check 'Endpoints' to see Pod IPs
