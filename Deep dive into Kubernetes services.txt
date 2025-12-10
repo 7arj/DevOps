@@ -1,0 +1,35 @@
+Deep Dive into Kubernetes Services & Networking
+
+1. Intra-Pod Networking (Containers in SAME Pod)
+   - They share the same Network Namespace (IP).
+   - Communicate via `localhost`.
+   - Enabled by Linux Kernel capabilities.
+
+2. Inter-Pod Networking (SAME Node)
+   - Kubernetes creates a custom bridge (CBR) on the node (like docker0).
+   - Containers connect to this bridge via veth pairs.
+   - Bridge handles routing locally between pods.
+
+3. Inter-Node Networking (Different Pods, DIFFERENT Nodes)
+   - Traffic must leave the node.
+   - Handled by Network Plugins (CNI - Container Network Interface).
+   - Examples: Calico, Flannel, Weave.
+   - Plugins manage routing tables and encapsulation to get packets across nodes.
+   - Requirement: All pods can communicate without NAT.
+
+4. Service Communication (How Services work internally)
+   - Kube-proxy: Runs on every node.
+   - It watches API server for services and updates `iptables` rules.
+   - When a packet targets a Service IP (Virtual IP), iptables traps it and DNATs (Destination NAT) it to a specific Pod IP.
+
+5. Service Discovery & DNS
+   - CoreDNS: The DNS server for the cluster (runs as pods).
+   - `/etc/resolv.conf` inside pods points to CoreDNS Service IP.
+   - Allows resolving services by name:
+     `curl http://my-service.default.svc.cluster.local`
+
+6. Key Components Recap
+   - Kubelet: Reports status to Master.
+   - Kube-proxy: Manages Network Rules (IPTables/IPVS).
+   - CoreDNS: Internal DNS.
+   - CNI Plugin: The "Plumbing" enabling Pod-to-Pod communication across nodes.
