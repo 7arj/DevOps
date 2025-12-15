@@ -1,0 +1,39 @@
+Understanding Horizontal Pod Autoscaler (HPA)
+
+1. Kubernetes Installation (From Scratch)
+   - Setup: Master Node + Worker Node (e.g., AWS EC2).
+   - Ports to Open:
+     - Master: 6443 (API), 2379-80 (etcd), 10250 (Kubelet).
+     - NodePort Range: 30000-32767.
+   - Component Install:
+     - Container Runtime (containerd).
+     - Tools: `kubeadm`, `kubelet`, `kubectl`.
+   - Init: `$ kubeadm init` on Master.
+   - Network Plugin: Weave / Calico / Flannel.
+
+2. Horizontal Pod Autoscaler (HPA)
+   - What is it? Automatically scales the number of pods based on metrics (CPU/RAM).
+   - "Horizontal" = Adding more Pods (replicas).
+   - Prerequisite: Metrics Server MUST be installed.
+
+3. Metrics Server
+   - Kubernetes doesn't capture stats by default.
+   - Metrics Server collects resource usage (CPU/Memory) from Kubelets.
+   - Essential for HPA and `$ kubectl top nodes` command.
+
+4. HPA Workflow
+   1. User defines HPA (e.g., Target CPU = 50%).
+   2. HPA Controller checks Metrics Server for current usage.
+   3. If Usage > Target -> Scale UP (add replicas).
+   4. If Usage < Target -> Scale DOWN (remove replicas).
+   5. Use minReplicas and maxReplicas limits.
+
+5. Testing & Config
+   - Config: Setting proper `resources.requests` and `limits` in Pod YAML is crucial! HPA calculates % based on Requests.
+   - Load Test: Generate traffic (e.g., using `busybox` loop) to spike CPU.
+   - Observation: Watch replicas increase automatically using `$ kubectl get hpa -w`.
+
+6. Best Practices
+   - Always define Resource Requests/Limits.
+   - Don't use HPA and VPA (Vertical Autoscaler) on CPU/Memory together (they conflict).
+   - HPA is crucial for handling variable traffic in Production.
