@@ -1,0 +1,48 @@
+Introduction to CI/CD (Continuous Integration / Continuous Delivery)
+
+1. Evolution of Software Development Models
+   - Waterfall: Sequential. Long release cycles.
+   - PLP (Predictable Release Model): Structured but rigid.
+   - Agile: Iterative. Customer feedback focused.
+   - Limitations of old models:
+     - Slow feedback loops.
+     - "Throwing over the wall" handoffs between Dev & Ops.
+
+2. Introduction to CI/CD
+   - CI (Continuous Integration): Automating code integration (Build/Test) frequently.
+   - CD (Continuous Delivery): Automating release process up to Production.
+   - Continuous Deployment: Fully automated deployment to Production (No manual gate).
+
+3. The CI Pipeline Steps (The "Build" Phase)
+   1. Checkout: Pull code from Git.
+   2. Linting: Check code style.
+   3. SCA (Software Composition Analysis): Check libraries for known vulnerabilities (e.g., OWASP).
+   4. Build/Package: Compile & create artifact (JAR, WAR).
+   5. Unit Tests: Test small functions (Success/Fail).
+   6. SAST (Static Analysis Security Testing): Scan source code for security flaws.
+   7. Containerize: Build Docker Image.
+   8. Scan Image & Push: Scan for OS vulns and push to Registry (JFrog/DockerHub).
+
+4. The CD Pipeline Steps (The "Deploy" Phase)
+   1. Deploy to SIT (System Integration Testing).
+   2. Run Integration Tests.
+   3. Deploy to Staging/Performance Env.
+   4. Run Performance/Load Tests.
+   5. Deploy to Production.
+
+5. DevOps vs DevSecOps
+   - DevOps: Dev + Ops collaboration.
+   - DevSecOps: Integrating Security from Day 1 (Shift Left).
+
+6. Types of Testing
+   - Unit: Smallest part.
+   - Integration: Do modules work together?
+   - System: End-to-end.
+   - Performance: Load/Stress testing.
+   - Security: SAST/DAST/SCA.
+
+7. Advantages of DevOps
+   - Faster TTM (Time to Market).
+   - Higher Quality (Automated testing).
+   - Cost Optimization.
+   - Feature Flagging: Toggle features on/off without redeploying.
