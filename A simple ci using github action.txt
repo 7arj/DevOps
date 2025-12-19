@@ -1,0 +1,57 @@
+A Simple CI using GitHub Actions
+
+1. Introduction
+   - GitHub Actions: CI/CD platform built directly into GitHub.
+   - Automates workflows (Build, Test, Deploy) when events happen (e.g., Push, Pull Request).
+
+2. Setup for Java Project
+   - Create a `.github/workflows` directory in repo.
+   - Add a YAML file (e.g., `maven.yml`).
+
+3. YAML Structure Components
+   - Name: Display name of the workflow.
+   - On (Triggers): When to run.
+     - `push`: Run on every push.
+     - `pull_request`: Run when PR is opened.
+   - Jobs: Group of steps. Run in parallel by default.
+   - Steps: Individual tasks (commands or actions).
+
+4. Actions vs Run Commands
+   - `uses`: Uses a pre-built Action (reusable code).
+     - `actions/checkout@v3`: Clones the repo.
+     - `actions/setup-java@v3`: Installs Java/JDK.
+   - `run`: Executes a shell command.
+     - `run: mvn -B package`
+
+5. Example Workflow (Java/Maven)
+   name: Java CI with Maven
+
+   on:
+     push:
+       branches: [ "main" ]
+
+   jobs:
+     build:
+       runs-on: ubuntu-latest
+
+       steps:
+       - uses: actions/checkout@v3
+       
+       - name: Set up JDK 17
+         uses: actions/setup-java@v3
+         with:
+           java-version: '17'
+           distribution: 'temurin'
+           
+       - name: Build with Maven
+         run: mvn -B package --file pom.xml
+
+6. Debugging & Logs
+   - Go to "Actions" tab in GitHub repo.
+   - Click on the workflow run.
+   - Click on the job ("build") to see logs for every step.
+   - If build fails (Red X), check the `Build with Maven` step logs for errors.
+
+7. Notes
+   - Configuration is declarative (YAML).
+   - "Distribution" in setup-java is important (temurin, zulu, adopt).
