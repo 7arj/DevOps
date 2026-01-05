@@ -1,0 +1,52 @@
+Introduction to DevSecOps and Implementing it using GitHub Actions
+
+1. Introduction
+   - CI/CD isn't just build & deploy; it includes Quality & Security gates.
+   - DevSecOps = Development + Security + Operations.
+   - Key Checks: Linting, SCA, SAST, DAST, Container Scanning.
+   - GitHub Actions: Easier/More modern than Jenkins for many use cases.
+
+2. Setting up the Workflow
+   - File Path: `.github/workflows/ci.yml`.
+   - Setup:
+     1. Create Repo.
+     2. Add Source Code (`pom.xml`, `Dockerfile`).
+     3. Use "Actions" tab -> Select Java/Maven template.
+
+3. Anatomy of `ci.yml`
+   - Name: `Build and Deploy`.
+   - On: `push` (branches: main), `pull_request`.
+   - Runs-on: `ubuntu-latest`.
+
+4. Key Steps in a DevSecOps Pipeline
+   1. Checkout Code: `actions/checkout`.
+   2. Setup Env: `actions/setup-java`.
+   3. **SCA (Dependency Check)**: Check `pom.xml` for known vulns in libraries.
+   4. **Linting**: Checkstyle / SpotBugs.
+   5. **SAST (Static Analysis)**: Analyze source code for logic/security flaws (e.g., SonarQube).
+   6. Unit Tests: `mvn test` (Business Logic validation).
+   7. Build Artifact: `mvn package` (Create JAR/WAR).
+   8. Build Docker Image: `docker build`.
+   9. **Container Scan**: Scan image layers for OS vulnerabilities (e.g., Trivy, Grype).
+      - Option: Break build if Critical/High vulns found.
+   10. Push to Registry: DockerHub / ACR / ECR.
+
+5. Secrets Management (CRITICAL)
+   - NEVER hard-code passwords (e.g., DockerHub password) in `ci.yml`.
+   - Use GitHub Secrets (`Settings -> Secrets and variables -> Actions`).
+   - Access in YAML: `${{ secrets.DOCKER_PASSWORD }}`.
+
+6. Troubleshooting
+   - Use "Actions" tab to view real-time logs.
+   - Add debug steps like `run: ls -la` or `run: env` (be careful with secrets!).
+
+7. Handling Vulnerabilities
+   - "Shift Left": Find vulns early in the PR stage.
+   - Policy: Decide whether to block build on "Critical" only or "High" as well.
+   - Updating Deps: Keep `pom.xml` and `Dockerfile` (Tomcat/Alpine versions) updated.
+
+8. Summary of Security Scans
+   - SCA: Libraries/Dependencies.
+   - SAST: Source Code.
+   - DAST: Running Application (Dynamic testing).
+   - Container Scan: Image/OS layers.
