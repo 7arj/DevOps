@@ -1,0 +1,42 @@
+Add an Agent and Implement the CD
+
+1. CI/CD Pipeline Concepts
+   - CI and CD are often separate pipelines/workflows.
+   - CI produces the Artifact (Docker Image).
+   - CD picks up the Artifact and deploys it.
+
+2. The Deployment Process (CD)
+   1. Fetch Artifact from Registry (e.g., DockerHub).
+   2. Deploy to SIT (System Integration Testing) -> Run Tests.
+   3. Deploy to Performance Env -> Run Stress Tests.
+   4. Deploy to Security Env -> Run DAST.
+   5. Deploy to Production.
+
+3. Setting up Kubernetes Environment
+   - Options for local/learning: VirtualBox, Vagrant.
+   - Cloud (Used in Demo): AWS EC2 Instance.
+   - Setup Steps:
+     - Launch EC2 (Ubuntu).
+     - Install K8s tools (kubectl, kubeadm, kubelet, container runtime).
+
+4. GitHub Actions Self-Hosted Runner (The "Agent")
+   - Why? To deploy to a private K8s cluster (like our EC2) that isn't publicly accessible, or to save costs.
+   - How:
+     1. Go to Repo Settings -> Actions -> Runners.
+     2. Click "New self-hosted runner".
+     3. Run the provided commands on the EC2 instance.
+   - Result: GitHub Actions can now execute jobs directly on the EC2 machine.
+
+5. Implementing the CD Workflow
+   - File: `.github/workflows/CD.yaml`.
+   - Trigger: `workflow_dispatch` (Manual trigger) or `on: push` to main.
+   - Steps:
+     1. Checkout code (to get K8s manifest files).
+     2. `kubectl apply -f deployment.yaml`.
+     3. `kubectl set image deployment/myapp myapp=new-image:tag`.
+
+6. Verification
+   - On the EC2 instance (Agent):
+     $ kubectl get pods
+     $ kubectl get svc
+   - verify the pod status is "Running".
