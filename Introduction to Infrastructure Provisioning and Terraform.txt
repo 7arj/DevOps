@@ -1,0 +1,50 @@
+Introduction to Infrastructure Provisioning and Terraform
+
+1. DevOps is More Than CI/CD
+   - It also covers:
+     - Monitoring (Prometheus, Grafana, Nagios).
+     - Logging (ELK Stack).
+     - Infrastructure Provisioning (IaC).
+
+2. Infrastructure as Code (IaC) Categories
+   A. Provisioning Tools: Setup the servers/network (Terraform, CloudFormation).
+   B. Config Management: Configure software inside servers (Ansible, Puppet, Chef).
+   C. Server Templating: Pre-packaged images (Docker, Vagrant, Packer).
+
+3. Introduction to Terraform
+   - Open Source, Platform Agnostic (Works with AWS, Azure, GCP).
+   - Declarative: You define "What you want", not "How to do it".
+   - State Management: Keeps track of resources in `terraform.tfstate`.
+
+4. Terraform Workflow
+   1. Write Code: Create `.tf` files (e.g., `main.tf`).
+   2. Init: `$ terraform init` (Downloads provider plugins).
+   3. Plan: `$ terraform plan` (Preview changes - Dry run).
+   4. Apply: `$ terraform apply` (Create/Update infrastructure).
+   5. Destroy: `$ terraform destroy` (Delete everything).
+
+5. Terraform State
+   - The "Brain" of Terraform.
+   - Compares 3 things:
+     1. Your Code (.tf files).
+     2. The State File (terraform.tfstate).
+     3. Actual Cloud Resources (AWS).
+   - If someone deletes an EC2 manually, Terraform detects the drift via state.
+
+6. Best Practices
+   - NEVER hardcode secrets (Access Keys). Use Environment Variables or IAM Roles.
+   - Always run `plan` before `apply`.
+   - Use Version Control (Git) for .tf files.
+
+7. Parallel Execution
+   - Terraform builds a dependency graph.
+   - If resources (e.g., 2 EC2 instances) don't depend on each other, Terraform creates them in PARALLEL.
+
+8. AMIs (Amazon Machine Images)
+   - Pre-configured templates for instances (OS + App Server).
+   - Used to launch instances quickly.
+
+9. Why Terraform?
+   - Consistency & Speed.
+   - Repeatable infrastructure (Dev/Stage/Prod environments look identical).
+   - Scalable management.
