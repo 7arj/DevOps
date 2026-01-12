@@ -1,0 +1,45 @@
+Terraform in Action
+
+1. Resource Creation Stack
+   - Terraform allows creating a complete stack:
+     - VPC -> Subnets -> Internet Gateway -> Route Tables.
+     - Security Groups -> EC2 Instances.
+   - It can also execute scripts on instances (Using `user_data` or `remote-exec`).
+
+2. Terraform Files Structure
+   - `main.tf`: The core configuration where resources are defined.
+   - `variables.tf`: Where input variables are declared (type, default value, description).
+   - `terraform.tfvars`: Where actual values for the variables are assigned (e.g., `instance_type = "t2.micro"`).
+
+3. Variables Types
+   - Input Variables: Passed into the module/configuration.
+   - Local Variables: Scoped to the file/module, useful for repeated logic.
+   - Output Variables: Prints results after applying (e.g., The Public IP of the created EC2).
+
+4. Networking in AWS (via Terraform)
+   - VPC: Virtual Private Cloud (Network container).
+   - Subnets: Public (has IGW access) vs Private (NAT Gateway access).
+   - Internet Gateway (IGW): Allows traffic out to the internet.
+   - Route Tables: Rules connecting subnets to gateways.
+
+5. EC2 Configuration
+   - AMI: ID of the OS image.
+   - Instance Type: CPU/RAM config (e.g., t2.micro).
+   - Key Pair: For SSH access.
+   - User Data: Shell script that runs on first boot (e.g., install Apache).
+
+6. State Management
+   - `terraform.tfstate`: Stored locally by default.
+   - Remote State (S3): Best practice for teams. Stores state file in an S3 bucket.
+   - State Locking (DynamoDB): Prevents two developers from running `apply` at the same time and corrupting the state.
+
+7. Key Commands Recap
+   $ terraform init       # Prepare directory
+   $ terraform plan       # Preview (Add: 5, Change: 0, Destroy: 0)
+   $ terraform apply      # Execute
+   $ terraform destroy    # Delete all resources
+
+8. Best Practices
+   - Separation of concerns: Split `main.tf` into `vpc.tf`, `ec2.tf`, `outputs.tf` for readability.
+   - Always use Remote State + Locking for Production.
+   - Don't check `.tfvars` containing secrets into Git.
